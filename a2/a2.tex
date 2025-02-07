@@ -1,0 +1,241 @@
+\documentclass{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amsfonts,amssymb,graphicx}
+\title{\textbf{CS 370 Winter 2025: Assignment 2}}
+\author{Jiaze Xiao \\ 20933691}
+\date{\today}
+\setlength{\parindent}{0pt}
+\begin{document}
+
+\maketitle
+
+\section{Convergence of ODE Methods}
+\subsection*{(a)}
+Given
+$$
+    y'(t)=\dfrac{y(t)}{20}(10-y(t)),\quad y(0)=1/5
+$$
+To verify
+$$
+    y(t)=\dfrac{10}{49e^{-t/2}+1}
+$$
+We differentiate $ y(t) $ using the quotient rule:
+
+Let $ u = 10 $ and $ v = 49e^{-t/2} + 1 $, so that:
+
+$$
+    y(t) = \frac{u}{v}
+$$
+
+Using the quotient rule:
+
+$$
+    y'(t) = \frac{u' v - u v'}{v^2}
+$$
+
+Since $ u = 10 $ is a constant, $ u' = 0 $, so:
+
+$$
+    y'(t) = \frac{-u v'}{v^2}
+$$
+
+Now, compute $ v' $:
+
+$$
+    v = 49e^{-t/2} + 1
+$$
+
+$$
+    v' = -\frac{49}{2} e^{-t/2}
+$$
+
+Thus,
+
+\begin{align*}
+    y'(t) = & \frac{-10 \left(-\frac{49}{2} e^{-t/2} \right)}{(49e^{-t/2} + 1)^2} \\
+    =       & \frac{10 \times \frac{49}{2} e^{-t/2}}{(49e^{-t/2} + 1)^2}          \\
+    =       & \frac{245 e^{-t/2}}{(49e^{-t/2} + 1)^2}
+\end{align*}
+
+Now, compute the right-hand side of the ODE:
+
+$$
+    \frac{y}{20} (10 - y)
+$$
+
+First, substitute $ y(t) $:
+
+\begin{align*}
+    10 - y = & 10 - \frac{10}{49e^{-t/2} + 1}                             \\
+    =        & 10 \left(1 - \frac{1}{49e^{-t/2} + 1} \right)              \\
+    =        & 10 \left(\frac{49e^{-t/2} + 1 - 1}{49e^{-t/2} + 1} \right) \\
+    =        & 10 \left(\frac{49e^{-t/2}}{49e^{-t/2} + 1} \right)
+\end{align*}
+
+Now compute:
+\begin{align*}
+    \frac{y}{20} (10 - y) = & \frac{1}{20} \times \frac{10}{49e^{-t/2} + 1} \times 10 \left(\frac{49e^{-t/2}}{49e^{-t/2} + 1} \right) \\
+    =                       & \frac{5 \times 49e^{-t/2}}{(49e^{-t/2} + 1)^2}                                                          \\
+    y'(t)=                  & \frac{245 e^{-t/2}}{(49e^{-t/2} + 1)^2}
+\end{align*}
+
+Since both sides are equal, the given function satisfies the ODE.
+
+Finally, we need to verify $ y(0) = \frac{1}{5} $:
+
+$$
+    y(0) = \frac{10}{49e^{0} + 1} = \frac{10}{49 + 1} = \frac{10}{50} = \frac{1}{5}
+$$
+
+Thus, the initial condition holds.
+
+\newpage
+\section{Higher Order and Systems of ODEs}
+Define:
+$$ v_x = \frac{dx}{dt} $$
+$$ v_y = \frac{dy}{dt} $$
+
+Now, rewrite the second-order equations:
+
+$$
+    \frac{d v_x}{dt} = \dfrac{d^2x}{dt^2} = - \frac{x}{(x^2 + y^2)^{3/2}}
+$$
+
+$$
+    \frac{d v_y}{dt} = \dfrac{d^2y}{dt^2} = - \frac{y}{(x^2 + y^2)^{3/2}}
+$$
+
+Define the state vector:
+
+$$
+    \mathbf{u} = \begin{bmatrix} x \\ y \\ v_x \\ v_y \end{bmatrix}
+$$
+
+Then, the system can be written in the form:
+
+$$
+    \frac{d \mathbf{u}}{dt} = F(t, \mathbf{u})
+$$
+
+where:
+
+$$
+    F(t, \mathbf{u}) =
+    \begin{bmatrix}
+        v_x                           \\
+        v_y                           \\
+        - \frac{x}{(x^2 + y^2)^{3/2}} \\
+        - \frac{y}{(x^2 + y^2)^{3/2}}
+    \end{bmatrix}
+$$
+
+Given initial values:
+
+$$
+    x(0) = 0.4, \quad y(0) = 0, \quad v_x(0) = 0, \quad v_y(0) = 2
+$$
+
+and pass them into vector $\mathbf{u}$:
+
+$$
+    \mathbf{u}(0) = \begin{bmatrix} 0.4 \\ 0 \\ 0 \\ 2 \end{bmatrix}
+$$
+
+As a result, the first-order system of ODEs is:
+
+$$
+    \frac{d}{dt} \begin{bmatrix} x \\ y \\ v_x \\ v_y \end{bmatrix} =
+    \begin{bmatrix}
+        v_x                           \\
+        v_y                           \\
+        - \frac{x}{(x^2 + y^2)^{3/2}} \\
+        - \frac{y}{(x^2 + y^2)^{3/2}}
+    \end{bmatrix}
+$$
+
+with initial conditions:
+
+$$
+    \mathbf{u}(0) = \begin{bmatrix} 0.4 \\ 0 \\ 0 \\ 2 \end{bmatrix}
+$$
+
+\newpage
+\section{Forward Euler and Improved Euler Methods}
+The Forward Euler method is:
+$$
+    y_{n+1} = y_n + h f(x_n, y_n)
+$$
+where \( f(x, y) = x + y \).
+
+At \( x_1 = 0.5 \),
+$$ y_0 = 2 $$
+$$ f(0,2) = 0 + 2 = 2 $$
+$$
+    y_1 = 2 + 0.5 \times 2 = 2 + 1 = 3
+$$
+
+At \( x_2 = 1.0 \),
+$$ f(0.5, 3) = 0.5 + 3 = 3.5 $$
+$$
+    y_2 = 3 + 0.5 \times 3.5 = 3 + 1.75 = 4.75
+$$
+
+The Improved Euler method is:
+
+$$
+    k_1 = hf(x_n, y_n)
+$$
+$$
+    k_2 = hf(x_n + h, y_n + k_1)
+$$
+$$
+    y_{n+1} = y_n + \frac{k_1}{2} + \frac{k_2}{2}
+$$
+
+At \( x_1 = 0.5 \),
+$$ y_0 = 2 $$
+$$ k_1 = 0.5\times f(0,2) = 0.5\times  2 = 1 $$
+$$ k_2 = 0.5\times f(0.5, 2 + 1) = 0.5\times 3.5 = 1.75 $$
+$$ y_1 = 2 + \frac{1}{2}+ \frac{1.75}{2}= 3.375 $$
+
+At \( x_2 = 1.0 \),
+$$ k_1 = 0.5\times f(0.5, 3.375) = 0.5 \times 3.875 = 1.9375 $$
+$$ k_2 = 0.5 \times f(1.0, 3.375 + 1.9375) = 0.5 \times 6.3125 = 3.15625 $$
+$$ y_2 = 3.375 + \frac{1.9375}{2} + \frac{3.15625}{2}=5.921875 $$
+
+The exact solution is:
+
+$$
+    y(x) = 3e^x - x - 1
+$$
+
+For \( x = 0.5 \):
+
+$$
+    y(0.5) = 3e^{0.5} - 0.5 - 1 \approx 3.446
+$$
+
+For \( x = 1.0 \):
+
+$$
+    y(1.0) = 3e^{1.0} - 1.0 - 1 \approx 6.155
+$$
+
+$$
+    \begin{array}{|c|c|c|c|c|c|}
+        \hline
+        x   & \text{Exact Solution} & \text{Forward Euler} & \text{FE Error} & \text{Improved Euler} & \text{IE Error} \\
+        \hline
+        0.5 & 3.446                 & 3.000                & 0.446           & 3.375                 & 0.071           \\
+        1.0 & 6.155                 & 4.750                & 1.405           & 5.922                 & 0.233           \\
+        \hline
+    \end{array}
+$$
+
+\newpage
+\section{Local Truncation Error}
+
+\newpage
+\section{Stability}
+
+\end{document}
