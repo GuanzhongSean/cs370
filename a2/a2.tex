@@ -92,23 +92,23 @@ Thus, the initial condition holds.
 \newpage
 \section{Higher Order and Systems of ODEs}
 Define:
-$$ v_x = \frac{dx}{dt} $$
-$$ v_y = \frac{dy}{dt} $$
+$$ x_2 = \frac{dx}{dt} $$
+$$ y_2 = \frac{dy}{dt} $$
 
 Now, rewrite the second-order equations:
 
 $$
-    \frac{d v_x}{dt} = \dfrac{d^2x}{dt^2} = - \frac{x}{(x^2 + y^2)^{3/2}}
+    \frac{d x_2}{dt} = \dfrac{d^2x}{dt^2} = - \frac{x}{(x^2 + y^2)^{3/2}}
 $$
 
 $$
-    \frac{d v_y}{dt} = \dfrac{d^2y}{dt^2} = - \frac{y}{(x^2 + y^2)^{3/2}}
+    \frac{d y_2}{dt} = \dfrac{d^2y}{dt^2} = - \frac{y}{(x^2 + y^2)^{3/2}}
 $$
 
 Define the state vector:
 
 $$
-    \mathbf{u} = \begin{bmatrix} x \\ y \\ v_x \\ v_y \end{bmatrix}
+    \mathbf{u} = \begin{bmatrix} x \\ y \\ x_2 \\ y_2 \end{bmatrix}
 $$
 
 Then, the system can be written in the form:
@@ -122,8 +122,8 @@ where:
 $$
     F(t, \mathbf{u}) =
     \begin{bmatrix}
-        v_x                           \\
-        v_y                           \\
+        x_2                           \\
+        y_2                           \\
         - \frac{x}{(x^2 + y^2)^{3/2}} \\
         - \frac{y}{(x^2 + y^2)^{3/2}}
     \end{bmatrix}
@@ -132,7 +132,7 @@ $$
 Given initial values:
 
 $$
-    x(0) = 0.4, \quad y(0) = 0, \quad v_x(0) = 0, \quad v_y(0) = 2
+    x(0) = 0.4, \quad y(0) = 0, \quad x_2(0) = 0, \quad y_2(0) = 2
 $$
 
 and pass them into vector $\mathbf{u}$:
@@ -144,10 +144,10 @@ $$
 As a result, the first-order system of ODEs is:
 
 $$
-    \frac{d}{dt} \begin{bmatrix} x \\ y \\ v_x \\ v_y \end{bmatrix} =
+    \frac{d}{dt} \begin{bmatrix} x \\ y \\ x_2 \\ y_2 \end{bmatrix} =
     \begin{bmatrix}
-        v_x                           \\
-        v_y                           \\
+        x_2                           \\
+        y_2                           \\
         - \frac{x}{(x^2 + y^2)^{3/2}} \\
         - \frac{y}{(x^2 + y^2)^{3/2}}
     \end{bmatrix}
@@ -165,16 +165,16 @@ The Forward Euler method is:
 $$
     y_{n+1} = y_n + h f(x_n, y_n)
 $$
-where \( f(x, y) = x + y \).
+where $ f(x, y) = x + y $.
 
-At \( x_1 = 0.5 \),
+At $ x_1 = 0.5 $,
 $$ y_0 = 2 $$
 $$ f(0,2) = 0 + 2 = 2 $$
 $$
     y_1 = 2 + 0.5 \times 2 = 2 + 1 = 3
 $$
 
-At \( x_2 = 1.0 \),
+At $ x_2 = 1.0 $,
 $$ f(0.5, 3) = 0.5 + 3 = 3.5 $$
 $$
     y_2 = 3 + 0.5 \times 3.5 = 3 + 1.75 = 4.75
@@ -192,13 +192,13 @@ $$
     y_{n+1} = y_n + \frac{k_1}{2} + \frac{k_2}{2}
 $$
 
-At \( x_1 = 0.5 \),
+At $ x_1 = 0.5 $,
 $$ y_0 = 2 $$
 $$ k_1 = 0.5\times f(0,2) = 0.5\times  2 = 1 $$
 $$ k_2 = 0.5\times f(0.5, 2 + 1) = 0.5\times 3.5 = 1.75 $$
 $$ y_1 = 2 + \frac{1}{2}+ \frac{1.75}{2}= 3.375 $$
 
-At \( x_2 = 1.0 \),
+At $ x_2 = 1.0 $,
 $$ k_1 = 0.5\times f(0.5, 3.375) = 0.5 \times 3.875 = 1.9375 $$
 $$ k_2 = 0.5 \times f(1.0, 3.375 + 1.9375) = 0.5 \times 6.3125 = 3.15625 $$
 $$ y_2 = 3.375 + \frac{1.9375}{2} + \frac{3.15625}{2}=5.921875 $$
@@ -209,13 +209,13 @@ $$
     y(x) = 3e^x - x - 1
 $$
 
-For \( x = 0.5 \):
+For $ x = 0.5 $:
 
 $$
     y(0.5) = 3e^{0.5} - 0.5 - 1 \approx 3.446
 $$
 
-For \( x = 1.0 \):
+For $ x = 1.0 $:
 
 $$
     y(1.0) = 3e^{1.0} - 1.0 - 1 \approx 6.155
@@ -234,8 +234,112 @@ $$
 
 \newpage
 \section{Local Truncation Error}
+\subsection*{(a)}
+Since $ y_{n+1} $ depends on itself (implicitly), this equation must be solved iteratively or using algebraic manipulation, the method is implicit.
+
+\subsection*{(b)}
+Here, the equation involves $ y_n $ and $ y_{n-1} $, meaning it depends on multiple past values. Thus, the method is multi-step.
+
+\subsection*{(c)}
+Taylor Expansion of $y(t_{n+1})$:
+$$
+    y(t_{n+1}) = y(t_n) + h y'(t_n) + \frac{h^2}{2} y''(t_n) + \frac{h^3}{6} y'''(t_n) + O(h^4).
+$$
+Since $ f(t, y) = y'(t) $, we also expand $ f $:
+$$
+    f(t_{n+1}, y(t_{n+1})) = y'(t_{n+1}) = y'(t_n) + h y''(t_n) + \frac{h^2}{2} y'''(t_n) + O(h^3).
+$$
+
+$$
+    f(t_{n-1}, y(t_{n-1})) = y'(t_{n-1}) = y'(t_n) - h y''(t_n) + \frac{h^2}{2} y'''(t_n) + O(h^3).
+$$
+Substituting the Taylor expansions:
+\begin{align*}
+    y_{n+1} = & y_n + \frac{h}{4} \left( y'(t_n) - h y''(t_n) + \frac{h^2}{2} y'''(t_n) \right)
+    + \frac{3h}{4} \left( y'(t_n) + h y''(t_n) + \frac{h^2}{2} y'''(t_n) \right) + O(h^4)       \\
+    =         & y_n + \frac{h}{4} y'(t_n) - \frac{h^2}{4} y''(t_n) + \frac{h^3}{8} y'''(t_n)
+    + \frac{3h}{4} y'(t_n) + \frac{3h^2}{4} y''(t_n) + \frac{3h^3}{8} y'''(t_n) + O(h^4)        \\
+    =         & y_n + \left( \frac{h}{4} + \frac{3h}{4} \right) y'(t_n)
+    + \left( -\frac{h^2}{4} + \frac{3h^2}{4} \right) y''(t_n)
+    + \left( \frac{h^3}{8} + \frac{3h^3}{8} \right) y'''(t_n) + O(h^4)                          \\
+    =         & y_n + h y'(t_n) + \frac{h^2}{2} y''(t_n) + \frac{h^3}{2} y'''(t_n) + O(h^4)
+\end{align*}
+
+Thus, the local truncation error is:
+
+$$
+    LTE = y(t_{n+1}) - y_{n+1}.
+$$
+
+$$
+    LTE = \left( \frac{h^3}{6} - \frac{h^3}{2} \right) y'''(t_n) + O(h^4).
+$$
+
+$$
+    \boxed{LTE = -\frac{1}{3} h^3 y^{(3)}(t_n) + O(h^4)}.
+$$
+where $ \alpha = 3 $, $ \beta = 3 $, $ C = -\frac{1}{3} $.
 
 \newpage
 \section{Stability}
+Let
+$$
+    k_1 = f(t_n, y_n) = -\lambda y_n.
+$$
+$$
+    k_2 = f \left( t_n + \frac{2h}{3}, y_n + \frac{2h}{3} k_1 \right).
+$$
+We have
+$$
+    y_{n+1} = y_n + \frac{h}{4} \left( k_1 + 3 k_2 \right).
+$$
+Substituting \( k_1 = -\lambda y_n \):
+\begin{align*}
+    k_2 = & f \left( t_n + \frac{2h}{3}, y_n - \frac{2h}{3} \lambda y_n \right) \\
+    =     & -\lambda \left( y_n - \frac{2h}{3} \lambda y_n \right)              \\
+    =     & -\lambda y_n + \frac{2h}{3} \lambda^2 y_n.
+\end{align*}
+
+Substituting \( k_1 \) and \( k_2 \):
+\begin{align*}
+    y_{n+1} =        & y_n + \frac{h}{4} \left( -\lambda y_n + 3 \left(-\lambda y_n + \frac{2h}{3} \lambda^2 y_n \right) \right) \\
+    =                & y_n + \frac{h}{4} \left( -\lambda y_n - 3\lambda y_n + 2h \lambda^2 y_n \right)                           \\
+    =                & y_n \left( 1 + \frac{h}{4} (-4\lambda + 2h \lambda^2) \right)                                             \\
+    =                & y_n \left( 1 - \lambda h + \frac{h^2\lambda^2}{2} \right)                                                 \\
+    \Rightarrow y_n= & y_0 \left( 1 - \lambda h + \frac{h^2\lambda^2}{2} \right)^n
+\end{align*}
+For stability, we need:
+
+$$
+    \left| 1 - \lambda h + \frac{h^2\lambda^2}{2} \right| \leq 1.
+$$
+
+$\Rightarrow$
+
+$$
+    -1 \leq 1 - \lambda h + \frac{h^2\lambda^2}{2} \leq 1.
+$$
+
+First inequality:
+$$
+    -1 \leq 1 - \lambda h + \frac{h^2\lambda^2}{2}
+$$
+$\Rightarrow$
+$$
+    h\lambda(2-h\lambda)\leq4
+$$
+Second inequality:
+$$
+    1 - \lambda h + \frac{h^2\lambda^2}{2} \leq 1.
+$$
+$\Rightarrow$
+$$
+    h\lambda \leq2
+$$
+
+As a result, the method is conditionally stable when
+\[
+    \boxed{0 \leq h \leq \dfrac{2}{\lambda}}.
+\]
 
 \end{document}
