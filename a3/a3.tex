@@ -1,0 +1,108 @@
+\documentclass{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amsfonts,amssymb,graphicx}
+\title{\textbf{CS 370 Winter 2025: Assignment 3}}
+\author{Jiaze Xiao \\ 20933691}
+\date{\today}
+\setlength{\parindent}{0pt}
+\begin{document}
+
+\maketitle
+
+\section{DFT of a sine signal}
+We have
+$$
+    f_n =\sin\bigl(\tfrac{8\pi n}{N}\bigr),
+    \quad n=0,1,\dots,N-1,
+$$
+
+Since
+$$
+    \sin\theta =\frac{1}{2i}
+    \bigl(e^{i\theta} - e^{-i\theta}\bigr).
+$$
+Hence
+$$
+    F_k
+    =
+    \frac{1}{N}\sum_{n=0}^{N-1} f_n W^{-nk}
+    =
+    \frac{1}{N}\sum_{n=0}^{N-1}
+    \frac{1}{2i}\Bigl(
+    e^{i\tfrac{8\pi n}{N}}
+    -
+    e^{-i\tfrac{8\pi n}{N}}
+    \Bigr)
+    W^{-nk}.
+$$
+Factor out $N/(2i\pi)$ and combine exponents by noting that
+$
+    e^{i(8\pi n/N)} = W^{4n}
+$
+
+$$
+    F_k
+    =
+    \frac{1}{2iN}\sum_{n=0}^{N-1}
+    \Bigl(
+    W^{4n}W^{-nk}
+    -
+    W^{-4n}W^{-nk}
+    \Bigr)
+    =
+    \frac{1}{2iN}\sum_{n=0}^{N-1}
+    \Bigl(
+    W^{n(4-k)}
+    -
+    W^{n(N -4 - k)}
+    \Bigr).
+$$
+
+We use the fact that
+$$
+    \sum_{n=0}^{N-1} W^{n(k-l)}
+    =
+    \begin{cases}
+        N, & \text{if}\ k=l,   \\
+        0, & \text{otherwise}.
+    \end{cases}
+$$
+Therefore, each of the two sums in parentheses is either $N$ or $0,$ depending on whether the exponent $(4-k)$ (respectively $N -4 - k$) is $0.$
+
+\begin{itemize}
+    \item Case 1: $k=4$. In this case, the first sum is $N$, and the second sum is $0$.
+    \item Case 2: $k=N-4$. Then the second sum is $N$, while the first sum is $0$.
+    \item All other $k$ give zero for both sums.
+\end{itemize}
+
+As a result,
+$$
+    \boxed{
+        F_k
+        =
+        \begin{cases}
+            \displaystyle
+            -\tfrac{i}{2},
+            \quad & k = 4,            \\
+            \displaystyle
+            +\tfrac{i}{2},
+            \quad & k = N-4,          \\
+            0,    & \text{otherwise}.
+        \end{cases}
+    }
+$$
+
+\newpage
+\section{DFT of special signals}
+\subsection*{(a)}
+
+\subsection*{(b)}
+\subsection*{(c)}
+
+\newpage
+\section{DFT of a real and even vector}
+
+\newpage
+\section{FFT}
+
+\end{document}
