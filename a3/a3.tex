@@ -83,21 +83,86 @@ $$
         \begin{cases}
             \displaystyle
             -\tfrac{i}{2},
-            \quad & k = 4,            \\
+            \quad & k = 4,           \\
             \displaystyle
             +\tfrac{i}{2},
-            \quad & k = N-4,          \\
-            0,    & \text{otherwise}.
+            \quad & k = N-4,         \\
+            0,    & \text{otherwise}
         \end{cases}
-    }
+    }.
 $$
 
 \newpage
 \section{DFT of special signals}
 \subsection*{(a)}
+Plug $f_n = W^{5n}$ into the DFT sum:
+$$
+    F_k
+    =\frac{1}{N}\sum_{n=0}^{N-1} W^{5n}W^{-nk}
+    =\frac{1}{N}\sum_{n=0}^{N-1} W^{n(5-k)}.
+$$
+The sum is $N$ only if $k=5$. Thus,
+$$
+    \boxed{
+        F_k
+        =
+        \begin{cases}
+            1, & k=5,    \\
+            0, & k\neq 5
+        \end{cases}
+    }.
+$$
 
 \subsection*{(b)}
+$$
+    F_k
+    =\frac1N\sum_{n=0}^{N-1}
+    (-1)^nW^{-nk}
+    =\frac1N\sum_{n=0}^{N-1}
+    \Bigl[-W^{-k}\Bigr]^{n}
+    =\frac1N\sum_{n=0}^{N-1}R^n,
+    \quad
+    R = -W^{-k}.
+$$
+Since $N$ is odd, $R^N=(-1)^N(W^{-k})^N=(-1)^N=-1.$. Thus,
+$$
+    \sum_{n=0}^{N-1}R^n
+    =\frac{R^N-1}{R-1}
+    =\frac{(-1)-1}{R-1}
+    =\frac{2}{1-R}
+    =\frac{2}{1-(-W^{-k})}
+    =\frac{2}{1+W^{-k}}.
+$$
+Therefore,
+$$
+    \boxed{
+    F_k
+    = \frac{1}{N}\frac{2}{1+W^{-k}}
+    =\frac{2}{N\bigl(1 + e^{-2\pi i k/N}\bigr)}
+    }.
+$$
+This is valid for every $k$.  In particular, there is no single “spike” in frequency; instead all bins $k$ are generally nonzero when $N$ is odd.
+
 \subsection*{(c)}
+Observe that $(-1)^n = e^{i\pi n} = W^{\frac{nN}{2}}.$  Then
+$$
+    F_k
+    =\frac1N\sum_{n=0}^{N-1}
+    (-1)^nW^{-nk}
+    =\frac1N\sum_{n=0}^{N-1} W^{\frac{nN}{2}}W^{-nk}
+    =\frac1N\sum_{n=0}^{N-1} W^{n\left(\frac{N}{2}-k\right)}.
+$$
+The sum is $N$ only if $k=\frac{N}{2}$. Thus,
+$$
+    \boxed{
+        F_k
+        =
+        \begin{cases}
+            1, & k=\frac{N}{2}, \\
+            0, & k\neq 5
+        \end{cases}
+    }.
+$$
 
 \newpage
 \section{DFT of a real and even vector}
