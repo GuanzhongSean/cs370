@@ -166,8 +166,168 @@ $$
 
 \newpage
 \section{DFT of a real and even vector}
+First, compute \(F_{N-k}\):
+\[
+    F_{N-k}
+    = \frac{1}{N}\sum_{n=0}^{N-1} f_nW^{-n(N-k)}
+    = \frac{1}{N}\sum_{n=0}^{N-1} f_nW^{nk}.
+\]
+Now make the change of index \(m = N - n\).  Because \(f\) is even, \(f_{N-m} = f_m\).  One finds
+\[
+    F_{N-k}
+    = \frac{1}{N}\sum_{m=0}^{N-1} f_{N-m} W^{(N-m)k}
+    = \frac{1}{N}\sum_{m=0}^{N-1} f_m W^{-m k}=F_k.
+\]
+Hence \(F_{N-k} = F_k\), so \(F\) is an even (symmetric) vector. And since $f$ is real, its DFT is conjugate symmetric, we have:
+$$
+    F_k=\overline{F_{N-k}}
+$$
+And $F_k=F_{N-k}$, we can conclude that each $F_k$ is real. Combining both parts proves that when \(f\) is a real and even vector, its DFT \(F\) is also real and even.
 
 \newpage
 \section{FFT}
+Stage 1 (\(N=8, W=e^{\frac{\pi i}{4}}\)),
+
+\(n=0\):
+\[
+    g_0 = \tfrac12(f_0 + f_4)
+    = \tfrac12(-1 + 5) = 2,
+    \quad
+    h_0 = \tfrac12(f_0 - f_4) W^{0}
+    = \tfrac12(-1 - 5)\cdot 1
+    = -3.
+\]
+\(n=1\):
+\[
+    g_1 = \tfrac12(f_1 + f_5)
+    = \tfrac12(2 + 2) = 2,
+    \quad
+    h_1 = \tfrac12(f_1 - f_5) W^{-1}
+    = \tfrac12(2 - 2) W^{-1}
+    = 0.
+\]
+\(n=2\):
+\[
+    g_2 = \tfrac12(f_2 + f_6)
+    = \tfrac12(3 + 3) = 3,
+    \quad
+    h_2 = \tfrac12(f_2 - f_6) W^{-2}
+    = \tfrac12(3 - 3) (\cdots)
+    = 0.
+\]
+\(n=3\):
+\[
+    g_3 = \tfrac12(f_3 + f_7)
+    = \tfrac12(4 + 4) = 4,
+    \quad
+    h_3 = \tfrac12(f_3 - f_7) W^{-3}
+    = \tfrac12(4 - 4) (\cdots)
+    = 0.
+\]
+
+Thus,
+\[
+    g = [ 2, 2, 3, 4 ],
+    \quad
+    h = [ -3, 0, 0, 0 ].
+\]
+
+Stage 2 (\(N=4, W=e^{\frac{\pi i}{2}}\)),
+\begin{itemize}
+    \item Let $f_{top}=g = [ 2, 2, 3, 4 ]$,\\
+          $n=0$,
+          $$
+              g_0 = \tfrac12(f_0 + f_2)
+              = \tfrac12(2+3) = 2.5,
+              \quad
+              h_0 = \tfrac12(f_0 - f_2) W^{0}
+              = \tfrac12(2-3)\cdot 1
+              = -0.5.
+          $$
+          $n=1$,
+          $$
+              g_1 = \tfrac12(f_1 + f_3)
+              = \tfrac12(2+4) = 3,
+              \quad
+              h_1 = \tfrac12(f_1 - f_3) W^{-1}
+              = \tfrac12(2-4)\cdot (-i)
+              = i.
+          $$
+          Thus,
+          $$
+              g_{top}=[2.5,3],
+              \quad
+              h_{top}=[-0.5,i].
+          $$
+    \item Let $f_{bottom}=h = [ -3,0,0,0 ]$,\\
+          $n=0$,
+          $$
+              g_0 = \tfrac12(f_0 + f_2)
+              = \tfrac12(-3+0) = -1.5,
+              \quad
+              h_0 = \tfrac12(f_0 - f_2) W^{0}
+              = \tfrac12(-3-0)\cdot 1
+              = -1.5.
+          $$
+          $n=1$,
+          $$
+              g_1 = \tfrac12(f_1 + f_3)
+              = \tfrac12(0+0) = 0,
+              \quad
+              h_1 = \tfrac12(f_1 - f_3) W^{-1}
+              = \tfrac12(0-0)\cdot (-i)
+              = 0.
+          $$
+          Thus,
+          $$
+              g_{bottom}=[-1.5,0],
+              \quad
+              h_{bottom}=[-1.5,0].
+          $$
+\end{itemize}
+
+Stage 3 (\(N=2, W=e^{\pi i}\)),
+\begin{itemize}
+    \item Let $f_{1st}=g_{top}=[2.5,3]$,
+          $$
+              g_0 = \tfrac12(f_0 + f_1)
+              = \tfrac12(2.5+3) = \frac{11}{4},
+              \quad
+              h_0 = \tfrac12(f_0 - f_1) W^{0}
+              = \tfrac12(2.5-3)\cdot 1
+              = -\frac{1}{4}.
+          $$
+    \item Let $f_{2nd}=h_{top}=[-0.5,i]$,
+          $$
+              g_0 = \tfrac12(f_0 + f_1)
+              = \tfrac12(-0.5+i) = -\frac{1}{4}+\frac{i}{2},
+              \quad
+              h_0 = \tfrac12(f_0 - f_1) W^{0}
+              = \tfrac12(-0.5-i)\cdot 1
+              = -\frac{1}{4}-\frac{i}{2}.
+          $$
+    \item Let $f_{3rd}=g_{bottom}=[-1.5,0]$,
+          $$
+              g_0 = \tfrac12(f_0 + f_1)
+              = -\frac{3}{4},
+              \quad
+              h_0 = \tfrac12(f_0 - f_1) W^{0}
+              = -\frac{3}{4}.
+          $$
+    \item Let $f_{4th}=h_{bottom}=[-1.5,0]$,
+          $$
+              g_0 = \tfrac12(f_0 + f_1)
+              = -\frac{3}{4},
+              \quad
+              h_0 = \tfrac12(f_0 - f_1) W^{0}
+              = -\frac{3}{4}.
+          $$
+\end{itemize}
+Unscramble the cofficients we get:
+$$
+    \boxed{
+        F=[\frac{11}{4}, -\frac{3}{4}, -\frac{1}{4}+\frac{i}{2}, -\frac{3}{4}, -\frac{1}{4}, -\frac{3}{4}, -\frac{1}{4}-\frac{i}{2}, -\frac{3}{4}]
+    }
+$$
 
 \end{document}
