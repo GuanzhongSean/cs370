@@ -201,7 +201,7 @@ $$
 \newpage
 \section*{Question 2}
 \subsection*{(a)}
-From $PA = LU$, we can write $A = P^T LU$. Taking the transpose, we get
+From $PA = LU$, we can write $A = P^T LU$ since $P$ is always orthogonal. Taking the transpose, we get
 $$
     A^T = (P^T LU)^T = U^TL^TP.
 $$
@@ -234,7 +234,7 @@ We can solve this in two triangular solves:
               x = P^T  y.
           $$
 \end{enumerate}
-The permutation $P^T$ simply reorders the components of $y$ to form $x$, and by the problem statement, we consider permutations (and transpositions) to require 0 flops, since they can be done via indexing.
+The permutation $P^T$ simply reorders the components of $y$ to form $x$, and by the problem statement, we consider permutations (and transpositions) to require 0 FLOPs, since they can be done via indexing.
 
 \subsection*{(b)}
 Our solve proceeds by two triangular solves:
@@ -245,16 +245,59 @@ Our solve proceeds by two triangular solves:
 
 Hence, in total, the algorithm uses roughly
 $$
-    \boxed{O(n^2) \text{ flops}}
+    \boxed{O(n^2) \text{ FLOPs}}
 $$
 for the pair of triangular solves.
 
 \newpage
 \section*{Question 3}
 \subsection*{(a)}
+One possible procedure is described as follows:
 
+\begin{enumerate}
+    \item Compute $V = bc^T$.  This is an $n\times n$ outer product and costs $n^2$ FLOPs.
+    \item Factor $A^T = LU$. A standard $LU$ factorization of an $n \times n$ matrix takes $\tfrac{2}{3}n^3 + O(n^2)$ FLOPs.
+    \item Solving each row of $W$ as a seperate linear system, so need to do $n$ pairs of forward and backward solves, which costs $2n^2+O(n)$ FLOPs for each pair $\Longrightarrow 2n^3+O(n^2)$ in total.
+\end{enumerate}
+Putting these together,
+$$
+    \boxed{
+    \underbrace{n^2}_{\text{compute }V}
+    +
+    \underbrace{\tfrac{2}{3}n^3+O(n^2)}_{\text{factor }A^T}
+    +
+    \underbrace{2n^3+O(n^2)}_{\substack{\text{forward/back}\\\text{solves per row}}}
+    =
+    \frac{8}{3}n^3
+    +O(n^2)
+    }.
+$$
+Hence the overall flop count is $\frac{8}{3}n^3 + O(n^2)$.
 
 \subsection*{(b)}
+We can reduce the cost significantly by reordering how we compute $W$.
+Observe that
+$$
+    W
+    =
+    bc^TA^{-1}
+    =
+    b
+    \bigl(c^TA^{-1}\bigr).
+$$
+If we define a row vector
+$$
+    w^T = c^TA^{-1}
+    \quad\Longrightarrow\quad
+    W = bw^T,
+$$
+so that $W$ is the outer product of $b$ and $w^T$.
+Thus we only need to compute the single row vector $w^T$.
+But $w^T = c^TA^{-1}$ is equivalent to $w^T A = c^T$, or
+$$
+    A^T w = c,
+$$
+which becomes a normal linear system. We can simply solve it using LU factorization. Thus, we have reduced the leading cost from $\tfrac{8}{3}n^3$ in part~(a) to $\tfrac{2}{3}n^3+O(n^2)$ (the cost of LU factorization).
 
 \newpage
 \section*{Question 4}
