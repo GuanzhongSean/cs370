@@ -201,11 +201,60 @@ $$
 \newpage
 \section*{Question 2}
 \subsection*{(a)}
+From $PA = LU$, we can write $A = P^T LU$. Taking the transpose, we get
+$$
+    A^T = (P^T LU)^T = U^TL^TP.
+$$
+Thus the system
+$$
+    A^T x = v
+$$
+becomes
+$$
+    U^T  L^T  P  x = v.
+$$
+Let $y = Px$, then
+$$
+    U^T  L^T  y = v.
+$$
+We can solve this in two triangular solves:
+\begin{enumerate}
+    \item First solve
+          $$
+              L^Tz = v,
+          $$
+          which is an \emph{upper triangular} system (since $L$ is lower triangular, $L^T$ is upper triangular). Call the result $z$.
+    \item Next solve
+          $$
+              U^Ty = z,
+          $$
+          which is again a triangular system (since $U$ is upper triangular, $U^T$ is lower triangular, but the procedure is still a standard triangular solve). Call the result $y$.
+    \item Finally, recover $x$ from $y$ using
+          $$
+              x = P^T  y.
+          $$
+\end{enumerate}
+The permutation $P^T$ simply reorders the components of $y$ to form $x$, and by the problem statement, we consider permutations (and transpositions) to require 0 flops, since they can be done via indexing.
 
 \subsection*{(b)}
+Our solve proceeds by two triangular solves:
+\begin{itemize}
+    \item A triangular solve (e.g.\ $L^T z = v$) typically requires on the order of $\tfrac12n(n+1)$ multiplications plus the same number of additions, which is $O(n^2)$ overall.
+    \item The second triangular solve $U^T y = z$ is likewise $O(n^2)$.
+\end{itemize}
+
+Hence, in total, the algorithm uses roughly
+$$
+    \boxed{O(n^2) \text{ flops}}
+$$
+for the pair of triangular solves.
 
 \newpage
 \section*{Question 3}
+\subsection*{(a)}
+
+
+\subsection*{(b)}
 
 \newpage
 \section*{Question 4}
