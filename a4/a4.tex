@@ -301,5 +301,75 @@ which becomes a normal linear system. We can simply solve it using LU factorizat
 
 \newpage
 \section*{Question 4}
+Here is the Markov Chain Matrix for the given graph:
+$$
+    P
+    =
+    \begin{bmatrix}
+        0        & 0        & 0        & 0        & 1 & \tfrac13 \\[3pt]
+        \tfrac12 & 0        & \tfrac12 & \tfrac12 & 0 & 0        \\[3pt]
+        \tfrac12 & \tfrac13 & 0        & 0        & 0 & 0        \\[3pt]
+        0        & \tfrac13 & 0        & 0        & 0 & \tfrac13 \\[3pt]
+        0        & \tfrac13 & \tfrac12 & \tfrac12 & 0 & \tfrac13 \\[3pt]
+        0        & 0        & 0        & 0        & 0 & 0
+    \end{bmatrix}.
+$$
+Since $\alpha=1/2$, each page~$j$ contributes a weight of $\tfrac12 \cdot \tfrac{1}{d_j}$ to any $i$ that it links to, plus the random-jump contribution of $\tfrac12 \cdot \tfrac{1}{6}=\tfrac{1}{12}$ to every page~$i$. We obtain the complete $6\times 6$ matrix:
+$$
+    M
+    =
+    \begin{bmatrix}
+        \frac{1}{12} & \frac{1}{12} & \frac{1}{12} & \frac{1}{12} & \frac{7}{12} & \frac{1}{4}  \\[5pt]
+        \frac{1}{3}  & \frac{1}{12} & \frac{1}{3}  & \frac{1}{3}  & \frac{1}{12} & \frac{1}{12} \\[5pt]
+        \frac{1}{3}  & \frac{1}{4}  & \frac{1}{12} & \frac{1}{12} & \frac{1}{12} & \frac{1}{12} \\[5pt]
+        \frac{1}{12} & \frac{1}{4}  & \frac{1}{12} & \frac{1}{12} & \frac{1}{12} & \frac{1}{4}  \\[5pt]
+        \frac{1}{12} & \frac{1}{4}  & \frac{1}{3}  & \frac{1}{3}  & \frac{1}{12} & \frac{1}{4}  \\[5pt]
+        \frac{1}{12} & \frac{1}{12} & \frac{1}{12} & \frac{1}{12} & \frac{1}{12} & \frac{1}{12}
+    \end{bmatrix}.
+$$
+We assume the initial probability vector is
+$$
+    p^{(0)}
+    =
+    \begin{bmatrix}
+        \tfrac14 \\[3pt]
+        \tfrac14 \\[3pt]
+        0        \\[3pt]
+        \tfrac14 \\[3pt]
+        0        \\[3pt]
+        \tfrac14
+    \end{bmatrix},
+$$
+meaning the surfer starts on pages 1, 2, 4, and~6 with probability $1/4$ each, and has zero probability of being on pages~3 or~5.
+
+The probability vector after one step is given by
+$$
+    p^{(1)} = M p^{(0)}.
+$$
+Because $p^{(0)}$ has zeros in the 3rd and 5th entries, we only need the matrix columns 1, 2, 4, and~6 (each scaled by $1/4$).  Define
+$$
+    \text{colSum} = M(\cdot,1) + M(\cdot,2) + M(\cdot,4) + M(\cdot,6).
+$$
+Then
+$$
+    p^{(1)}
+    =
+    \frac{1}{4}\text{colSum}.
+$$
+Thus, after one step of surfing (with $\alpha=1/2$), the new probability of being on each of the 6 pages is exactly
+$$
+    \boxed{
+        p^{(1)}
+        =
+        \begin{bmatrix}
+            \tfrac{1}{8}   \\[3pt]
+            \tfrac{5}{24}  \\[3pt]
+            \tfrac{3}{16}  \\[3pt]
+            \tfrac{1}{6}   \\[3pt]
+            \tfrac{11}{48} \\[3pt]
+            \tfrac{1}{12}
+        \end{bmatrix}.
+    }
+$$
 
 \end{document}
