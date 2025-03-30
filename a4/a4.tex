@@ -1,0 +1,213 @@
+\documentclass{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amsfonts,amssymb,graphicx}
+\title{\textbf{CS 370 Winter 2025: Assignment 4}}
+\author{Jiaze Xiao \\ 20933691}
+\date{\today}
+\setlength{\parindent}{0pt}
+\begin{document}
+
+\maketitle
+
+\section*{Question 1}
+\subsection*{(a)}
+Compare the magnitudes in the first column:
+$$
+    |1| = 1, \quad \Bigl|\tfrac12\Bigr| = 0.5, \quad \Bigl|\tfrac13\Bigr| \approx 0.333.
+$$
+The largest is $1$ (in row~1), so no row-swap is needed at this step. We got multipliers
+$$
+    \ell_{21} = \tfrac12,
+    \quad
+    \ell_{31} = \tfrac13.
+$$
+Then for row~2 and row~3, we do:
+$$
+    \begin{aligned}
+        R_2 & \leftarrow R_2 - \tfrac12R_1, \\
+        R_3 & \leftarrow R_3 - \tfrac13R_1.
+    \end{aligned}
+$$
+After these operations, the matrix becomes
+$$
+    \begin{bmatrix}
+        1 & 7         & 3         \\
+        0 & -\tfrac54 & -\tfrac74 \\
+        0 & 5         & -1
+    \end{bmatrix}.
+$$
+Since $|-\tfrac54| \approx 1.25 < |5| = 5$, we swap row~2 and row~3. This introduces one permutation in $P$. After the swap, we have
+$$
+    \begin{bmatrix}
+        1 & 7         & 3         \\
+        0 & 5         & -1        \\
+        0 & -\tfrac54 & -\tfrac74
+    \end{bmatrix}\quad
+    \text{and}\quad
+    \ell_{21} = \tfrac13,
+    \quad
+    \ell_{31} = \tfrac12.
+$$
+Now eliminate below the pivot $5$ in row~2 using multiplier
+$$
+    \ell_{32} = \frac{-\tfrac54}{5} = -\tfrac14.
+$$
+Then for row~3, we do:
+$$
+    R_3 \leftarrow R_3 -(-\tfrac14)R_2.
+$$
+Thus we arrive at
+$$
+    U =
+    \begin{bmatrix}
+        1 & 7 & 3  \\
+        0 & 5 & -1 \\
+        0 & 0 & -2
+    \end{bmatrix}.
+$$
+Therefore, the final factorization is
+$$
+    \boxed{
+        P =
+        \begin{bmatrix}
+            1 & 0 & 0 \\
+            0 & 0 & 1 \\
+            0 & 1 & 0
+        \end{bmatrix},
+        \quad
+        L =
+        \begin{bmatrix}
+            1        & 0         & 0 \\
+            \tfrac13 & 1         & 0 \\
+            \tfrac12 & -\tfrac14 & 1
+        \end{bmatrix},
+        \quad
+        U =
+        \begin{bmatrix}
+            1 & 7 & 3  \\
+            0 & 5 & -1 \\
+            0 & 0 & -2
+        \end{bmatrix}
+    }.
+$$
+
+\newpage
+\subsection*{(b)}
+Let $z = Ux$. Then
+$$
+    Lz = Pb \quad\text{and}\quad Ux = z.
+$$
+
+\paragraph{1. Compute $Pb$.}
+$$
+    Pb
+    =
+    \begin{bmatrix}
+        1 & 0 & 0 \\
+        0 & 0 & 1 \\
+        0 & 1 & 0
+    \end{bmatrix}
+    \begin{bmatrix}0\\4\\8\end{bmatrix}
+    =
+    \begin{bmatrix}0\\8\\4\end{bmatrix}.
+$$
+
+\paragraph{2. Solve $Lz = Pb$.}
+$$
+    L
+    =
+    \begin{bmatrix}
+        1        & 0         & 0 \\
+        \tfrac13 & 1         & 0 \\
+        \tfrac12 & -\tfrac14 & 1
+    \end{bmatrix},
+    \quad
+    z = \begin{bmatrix}z_1\\z_2\\z_3\end{bmatrix},
+    \quad
+    Pb = \begin{bmatrix}0\\8\\4\end{bmatrix}.
+$$
+Forward solve:
+$$
+    \begin{aligned}
+         & \text{(Row 1)}\quad 1z_1 = 0 \Longrightarrow z_1=0,              \\
+         & \text{(Row 2)}\quad \tfrac13z_1 + z_2 = 8 \Longrightarrow z_2=8, \\
+         & \text{(Row 3)}\quad \tfrac12z_1 - \tfrac14z_2 + z_3 = 4
+        \Longrightarrow
+        -\tfrac14\cdot 8 + z_3 = 4
+        \Longrightarrow
+        z_3=6.
+    \end{aligned}
+$$
+Hence
+$$
+    z
+    =
+    \begin{bmatrix}
+        0 \\
+        8 \\
+        6
+    \end{bmatrix}.
+$$
+
+\paragraph{3. Solve $Ux = z$.}
+$$
+    U
+    =
+    \begin{bmatrix}
+        1 & 7 & 3  \\
+        0 & 5 & -1 \\
+        0 & 0 & -2
+    \end{bmatrix},
+    \quad
+    x
+    =
+    \begin{bmatrix}x_1\\x_2\\x_3\end{bmatrix},
+    \quad
+    z
+    =
+    \begin{bmatrix}0\\8\\6\end{bmatrix}.
+$$
+Backward solve:
+$$
+    \begin{aligned}
+         & \text{(Row 3)}\quad -2x_3 = 6 \Longrightarrow x_3=-3, \\
+         & \text{(Row 2)}\quad 5x_2 - x_3 = 8
+        \Longrightarrow
+        5x_2 + 3=8
+        \Longrightarrow
+        x_2=1,                                                   \\
+         & \text{(Row 1)}\quad x_1 + 7x_2 + 3x_3=0
+        \Longrightarrow
+        x_1 +7(1)+3(-3)=0
+        \Longrightarrow
+        x_1 +7-9=0
+        \Longrightarrow
+        x_1=2.
+    \end{aligned}
+$$
+Therefore,
+$$
+    \boxed{
+        x
+        =
+        \begin{bmatrix}
+            2 \\
+            1 \\
+            -3
+        \end{bmatrix}
+    }.
+$$
+
+\newpage
+\section*{Question 2}
+\subsection*{(a)}
+
+\subsection*{(b)}
+
+\newpage
+\section*{Question 3}
+
+\newpage
+\section*{Question 4}
+
+\end{document}
